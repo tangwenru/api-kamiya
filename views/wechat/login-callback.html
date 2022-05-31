@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>微信登录</title>
+    <style>
+        html{
+            font-family: "PingFang SC";
+        }
+        #root{
+            text-align: center;
+            margin: 0;
+            padding: 20px;
+        }
+        .loading{
+            font-size: 12px;
+            line-height: 1.5em;
+        }
+        .error{
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+
+<div id="root">
+    <div id="loading" class="loading">
+        加载中...
+    </div>
+    <div id="error" class="error"></div>
+</div>
+<script>
+    (function (){
+        const sid = '{{.SID}}';
+        const errorMessage = '{{.ErrorMessage}}';
+        if( ! errorMessage ){
+            let url = window.localStorage.getItem('we-login-success-page') || '{{.WebDomain}}/auth/wechat/success';
+            url = url + ( url.indexOf('?') === -1 ? '?' : '&' ) + `loginSid=${ sid }`;
+            window.localStorage.setItem('sid', sid );
+            document.location.replace( url );
+        }else{
+            const $loading = document.querySelector('#loading');
+            $loading.remove();
+            const $error = document.querySelector('#error');
+            $error.innerHTML = errorMessage;
+        }
+    })();
+</script>
+</body>
+</html>
